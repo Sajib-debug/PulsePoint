@@ -1,54 +1,128 @@
-<%@include file="header.html"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@page import="Project.ConnectionProvider" %> 
+<%@page import="java.sql.*" %>
+<%@include file="header.html" %>   
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <link rel="stylesheet" href="style.css" type="text/css" media="screen">
 <style>
-input[type="text"], input[type="password"], input[type="submit"],select
-{
+input[type="text"], input[type="password"], input[type="submit"], select {
     border: none;
-    background:silver;
+    background: silver;
     height: 50px;
     font-size: 16px;
-	margin-left:35%;
-	padding:15px;
-	width:33%;	
-	border-radius: 25px;
+    margin-left: 35%;
+    padding: 15px;
+    width: 33%;
+    border-radius: 25px;
 }
 
 #customers {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 55%;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 55%;
+    margin: auto;
 }
 
 #customers td, #customers th {
-  border: 1px solid #ddd;
-  padding: 8px;
+    border: 1px solid #ddd;
+    padding: 8px;
 }
 
-#customers tr:nth-child(even){background-color: #f2f2f2;}
-
+#customers tr:nth-child(even) {background-color:#f2f2f2;}
 #customers tr:hover {background-color: #ddd;}
 
 #customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #4CAF50;
-  color: white;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #388E3C;
 }
 </style>
+<title>Manage Stock</title>
 </head>
 <body>
 
+<div class="container">
+    <br>
+    <%
+    String msg = request.getParameter("msg");
+    if ("invalid".equals(msg)) {
+    %>
+        <center><font color="red" size="5">Something went wrong! Try Again.</font></center>
+    <% } else if ("valid".equals(msg)) { %>
+        <center><font color="green" size="5">Successfully Updated</font></center>
+    <% } %>
 
- 
-</table>
-</center>
-<br>
-<br>
-<br>
-<br>
-<h3><center>All Right Reserved @ BTech Days :: 2020  </center></h3>
+    <form action="manageStockAction.jsp" method="post">
+        <center><h2>Select Blood Group</h2></center>
+        <select name="bloodgroup">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+
+        <center><h2>Select Increase/Decrease</h2></center>
+        <select name="indec">
+            <option value="inc">Increase</option>
+            <option value="dec">Decrease</option>            
+        </select>
+
+        <center><h2>Units</h2></center>
+        <input type="text" placeholder="Enter Units" name="units"><br><br>
+        <center><button type="submit" class="button">Save</button></center>
+    </form>
+
+    <br>
+    <center>
+        <table id="customers">
+            <tr>
+                <th>Blood Group</th>
+                <th>Units</th>
+            </tr>
+            <%
+            try {
+                Connection con = ConnectionProvider.getConnection();
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT * FROM stock");
+                while (rs.next()) {
+            %>
+            <tr>
+                <td><%= rs.getString("bloodgroup") %></td>
+                <td><%= rs.getString("units") %></td>
+            </tr>
+            <%
+                }
+            } catch(Exception e) {
+                out.println("<tr><td colspan='2'>Error: "+ e.getMessage() +"</td></tr>");
+            }
+            %>
+        </table>
+    </center>
+</div>
+
 </body>
 </html>

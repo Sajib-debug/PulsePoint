@@ -9,29 +9,40 @@
             font-family: "Poppins", sans-serif;
             text-align: center;
             padding: 50px;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .message-box {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
             padding: 40px 50px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 50px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             max-width: 500px;
+            width: 90%;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
         }
 
         h2 {
-            color: #ffe3e3;
+            color: #ffd6d6;
             margin-bottom: 15px;
+            font-size: 26px;
         }
 
         p {
             font-size: 16px;
             color: #f0f0f0;
+            line-height: 1.5;
         }
 
         a {
@@ -42,13 +53,18 @@
             font-weight: bold;
             background: #ff4b5c;
             padding: 12px 28px;
-            border-radius: 12px;
+            border-radius: 15px;
             transition: 0.3s;
         }
 
         a:hover {
             background: #ff758c;
             color: #fff;
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -78,26 +94,30 @@
             int result = ps.executeUpdate();
             if(result > 0) {
 %>
-                <h2>🎉 Request Submitted Successfully!</h2>
+                <div class="icon">🎉</div>
+                <h2>Request Submitted Successfully!</h2>
                 <p>Thank you <strong><%= name %></strong> for your blood request.<br>We will contact you soon.</p>
 <%
             } else {
 %>
-                <h2>❌ Failed to submit your request!</h2>
+                <div class="icon">❌</div>
+                <h2>Failed to submit your request!</h2>
                 <p>Please try again later.</p>
 <%
             }
             ps.close();
         } catch(Exception e) {
 %>
-            <h2>⚠️ Error Occurred!</h2>
+            <div class="icon">⚠️</div>
+            <h2>Error Occurred!</h2>
             <p><%= e.getMessage() %></p>
 <%
             e.printStackTrace();
         }
     } else {
 %>
-        <h2>❗ Invalid Form Submission!</h2>
+        <div class="icon">❗</div>
+        <h2>Invalid Form Submission!</h2>
         <p>Please fill all fields correctly.</p>
 <%
     }

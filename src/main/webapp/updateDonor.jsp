@@ -1,41 +1,69 @@
-<%@include file="header.html"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="java.sql.*" %>
+<%@ page import="Project.ConnectionProvider" %>
+<%@ include file="header.html" %>
 <html>
 <head>
- <link rel="stylesheet" href="style.css" type="text/css" media="screen">
+<title>Update Donor</title>
 <style>
-input[type="text"], input[type="password"], input[type="email"], select,input[type="number"]
-{
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(120deg, #ff4b5c, #ff758c);
+    color: white;
+    text-align: center;
+}
+input, select {
+    width: 60%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
     border: none;
-    background:silver;
-    height: 50px;
     font-size: 16px;
-	padding:15px;
-	width:60%;	
-	border-radius: 25px;
-	margin-left:20%;
 }
-h2,h1
-{	
-	margin-left:20%;
-}
-hr
-{
-width:60%;	
+button {
+    background-color: white;
+    color: #ff4b5c;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
 }
 </style>
 </head>
 <body>
 
+<%
+String id = request.getParameter("id");
+try {
+    Connection con = ConnectionProvider.getConnection();
+    PreparedStatement ps = con.prepareStatement("select * from donor where id=?");
+    ps.setString(1, id);
+    ResultSet rs = ps.executeQuery();
+    if(rs.next()){
+%>
 
+<h1>Update Donor Details</h1>
+<form action="updateDonorAction.jsp" method="post">
+    <input type="hidden" name="id" value="<%= rs.getInt("id") %>">
 
+    <input type="text" name="name" value="<%= rs.getString("name") %>" placeholder="Enter Name"><br>
+    <input type="text" name="father" value="<%= rs.getString("father") %>" placeholder="Enter Father Name"><br>
+    <input type="text" name="mother" value="<%= rs.getString("mother") %>" placeholder="Enter Mother Name"><br>
+    <input type="text" name="mobilenumber" value="<%= rs.getString("mobilenumber") %>" placeholder="Enter Mobile Number"><br>
+    <input type="text" name="gender" value="<%= rs.getString("gender") %>" placeholder="Gender"><br>
+    <input type="text" name="email" value="<%= rs.getString("email") %>" placeholder="Enter Email"><br>
+    <input type="text" name="bloodgroup" value="<%= rs.getString("bloodgroup") %>" placeholder="Enter Blood Group"><br>
+    <input type="text" name="address" value="<%= rs.getString("address") %>" placeholder="Enter Address"><br>
 
+    <button type="submit">Update</button>
+</form>
 
-<br>
-<br>
-<br>
-<br>
-<h3><center>All Right Reserved @ BTech Days :: 2020  </center></h3>
+<%
+    }
+} catch(Exception e){
+    out.println("<h3>Error: "+e.getMessage()+"</h3>");
+}
+%>
 
 </body>
 </html>
