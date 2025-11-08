@@ -1,6 +1,6 @@
 <%@page import="java.sql.*"%>
 <%@page import="Project.ConnectionProvider"%>
-<%@include file="header.html"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,10 +14,24 @@
             color: #333;
             font-size: 14px;
         }
+        /* Header Box */
+        .header-box {
+            max-width: 700px;
+            margin: 30px auto 20px auto;
+            background-color: #ffd6dc; /* pastel pink */
+            color: #d32f2f;
+            text-align: center;
+            font-size: 26px;
+            font-weight: 600;
+            padding: 20px 15px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+            letter-spacing: 0.5px;
+        }
         .container {
             background-color: #fff;
             width: 65%;
-            margin: 40px auto;
+            margin: 20px auto 40px auto;
             padding: 25px 35px;
             border-radius: 15px;
             box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
@@ -55,9 +69,16 @@
             font-size: 15px;
             cursor: pointer;
             transition: 0.3s;
+            text-decoration: none;
         }
         .button:hover {
             background-color: #b71c1c;
+        }
+        .admin-button {
+            background-color: #1976d2;
+        }
+        .admin-button:hover {
+            background-color: #0d47a1;
         }
         h3 {
             text-align: center;
@@ -69,6 +90,10 @@
             .container {
                 width: 90%;
                 padding: 20px;
+            }
+            .header-box {
+                width: 90%;
+                font-size: 22px;
             }
         }
     </style>
@@ -88,6 +113,11 @@
         e.printStackTrace();
     }
 %>
+
+<!-- Header Box -->
+<div class="header-box">
+    Add New Donor
+</div>
 
 <div class="container">
     <h1>Donor ID: <%= id %></h1>
@@ -130,7 +160,10 @@
         <h2>Address</h2>
         <input type="text" placeholder="Enter Address" name="address" required>
 
-        <center><button type="submit" class="button">Save</button></center>
+        <center>
+            <button type="submit" class="button">Save</button>
+            <a href="home.jsp" class="button admin-button" style="margin-left: 10px;">Admin Page</a>
+        </center>
     </form>
 </div>
 

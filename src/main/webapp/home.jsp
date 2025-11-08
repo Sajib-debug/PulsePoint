@@ -1,8 +1,11 @@
-<%@include file="header.html"%>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>PulsePoint | Home</title>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
 body {
     margin: 0;
@@ -10,106 +13,131 @@ body {
     background-color: #fff;
 }
 
-/* Welcome Message */
-.welcome {
-    text-align: center;
-    background-color: #ff4b5c;
-    color: white;
-    font-size: 40px;
-    font-weight: bold;
-    padding: 20px 15px;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-/* Navigation Buttons */
-.nav-buttons {
-    text-align: center;
-    margin: 20px 0 40px 0;
-}
-
-.nav-buttons a {
-    text-decoration: none;
-    display: inline-block;
-    background-color: #fff;
-    color: #ff4b5c;
-    border: 2px solid #ff4b5c;
-    padding: 12px 30px;
-    border-radius: 25px;
-    margin: 0 10px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.nav-buttons a:hover {
-    background-color: #ff4b5c;
-    color: #fff;
-}
-
-/* Slideshow */
-.slideshow-container {
-    max-width: 1000px;
-    position: relative;
-    margin: auto;
-    border-radius: 20px;
+/* Main container layout */
+.main-container {
+    display: flex;
+    height: 100vh;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-.mySlides {
+/* Sidebar styling */
+.sidebar {
+    width: 250px;
+    background-color: #ffd6dc;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar h2 {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: 600;
+}
+
+.sidebar .btn {
+    background-color: #ff5c8d;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .btn:hover {
+    background-color: #ff2e63;
+}
+
+/* Right content area */
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #9B5DE0; /* Updated background color */
+}
+
+/* Welcome Box */
+.welcome-box {
+    background-color: #f0e5ff; /* Light color for contrast */
+    color: #4B0082; /* Dark purple text */
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    padding: 20px 15px;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    width: 60%;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Image styling */
+.image-container {
+    width: 80%;
+    max-width: 900px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    margin-bottom: 20px;
+}
+
+.image-container img {
     width: 100%;
-    height: 400px;  /* image height proper size */
-    display: none;
+    height: 400px;
     object-fit: cover;
 }
 
 /* Footer */
 .footer {
     text-align: center;
-    margin: 40px 0;
-    color: #888;
+    margin-top: 20px;
+    color: #fff; /* White text for visibility */
     font-size: 14px;
 }
 </style>
 </head>
+
 <body>
 
-<!-- Welcome Message -->
-<div class="welcome">
-    Welcome to PulsePoint
+<div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>PulsePoint</h2>
+        <a href="addNewDonor.jsp" class="btn">Add New Donor</a>
+        <a href="editDeleteList.jsp" class="btn">Edit/Delete/List Donors</a>
+        <a href="manageStock.jsp" class="btn">Manage Stock</a>
+        <a href="requestForBlood.jsp" class="btn">Request for Blood</a>
+        <a href="requestCompleted.jsp" class="btn">Request Completed</a>
+        <a href="index.jsp" class="btn btn-danger mt-auto">Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Welcome Box -->
+        <div class="welcome-box">
+            Welcome Admin!
+        </div>
+
+        <!-- Main Image -->
+        <div class="image-container">
+            <img src="home.jpg" alt="PulsePoint Home">
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            &copy; 2025 PulsePoint. All Rights Reserved.
+        </div>
+    </div>
 </div>
 
-<br>
-<br>
-
-<!-- Slideshow -->
-<div class="slideshow-container">
-    <img class="mySlides" src="welcome.jpg">
-    <img class="mySlides" src="admin.PNG">
-    <img class="mySlides" src="slide1.jpg">
-</div>
-
-<!-- Footer -->
-<div class="footer">
-    &copy; 2025 PulsePoint. All Rights Reserved.
-</div>
-
-<script>
-var myIndex = 0;
-carousel();
-
-function carousel() {
-    var i;
-    var x = document.getElementsByClassName("mySlides");
-    for (i = 0; i < x.length; i++) {
-       x[i].style.display = "none";  
-    }
-    myIndex++;
-    if (myIndex > x.length) {myIndex = 1}    
-    x[myIndex-1].style.display = "block";  
-    setTimeout(carousel, 2500); // Change image every 2.5 seconds
-}
-</script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -3,144 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <title>PulsePoint | Admin Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Bootstrap 5 CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
-/* Body styling */
 body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background-color: #E49BA6;
     color: #fff;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #d90429; /* Bright red */
     padding: 20px 40px;
-    background: rgba(0,0,0,0.3);
 }
-
 .header a {
-    color: white;
+    color: white !important;
     text-decoration: none;
     font-weight: 600;
     margin-left: 20px;
-    padding: 8px 15px;
     border-radius: 8px;
+    padding: 8px 15px;
     transition: 0.3s;
 }
-
 .header a:hover, .header a.active {
-    background: #ff4b5c;
-    color: white;
+    background-color: white;
+    color: #d90429 !important;
 }
 
-/* Container */
-.container {
+/* Login box */
+.login-box {
+    background: white;
+    color: #333;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 40px;
+    width: 100%;
     max-width: 400px;
     margin: 80px auto;
-    padding: 40px;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    text-align: center;
 }
 
-/* Form headings */
-form h2 {
-    margin: 15px 0 5px;
-    font-weight: 600;
-    font-size: 18px;
+/* Inputs */
+.form-control {
+    border-radius: 30px;
+    background: #f8f9fa;
+    border: 1px solid #ccc;
+    color: #333;
 }
-
-/* Input fields */
-input[type="text"], input[type="password"] {
-    width: 80%;
-    padding: 15px;
-    margin: 10px 0 20px;
-    border-radius: 25px;
-    border: none;
-    font-size: 16px;
-    outline: none;
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    transition: 0.3s;
-}
-
-input[type="text"]::placeholder, input[type="password"]::placeholder {
-    color: #ccc;
-}
-
-input[type="text"]:focus, input[type="password"]:focus {
-    background: rgba(255,255,255,0.2);
+.form-control:focus {
+    background: #fff;
+    border-color: #E49BA6;
+    box-shadow: 0 0 0 0.25rem rgba(228,155,166,0.25);
 }
 
 /* Button */
-button {
-    width: 50%;
-    padding: 12px 0;
-    border-radius: 25px;
-    border: none;
-    background: #ff4b5c;
+.btn-custom {
+    background-color: #E49BA6;
     color: white;
     font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
+    border-radius: 30px;
     transition: 0.3s;
+    border: none;
 }
-
-button:hover {
-    background: #ff758c;
+.btn-custom:hover {
+    background-color: #d17a8a;
+    color: white;
 }
 
 /* Footer */
 footer {
-    margin-top: 50px;
+    margin-top: auto;
+    padding: 20px 0;
     text-align: center;
     font-size: 14px;
-    color: #ccc;
+    color: #fff;
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div>PulsePoint</div>
+<!-- Header -->
+<div class="header d-flex justify-content-between align-items-center">
+  <div class="fs-4 fw-bold">PulsePoint</div>
   <div class="header-right">
     <a href="index.jsp">Home</a>
     <a class="active" href="adminLogin.jsp">Admin Login</a>
   </div>
 </div>
 
-<div class="container">
+<!-- Login Form -->
+<div class="login-box text-center">
+    <%
+        String msg = request.getParameter("msg");
+        if("Invalid!".equals(msg)){
+    %>
+        <div class="alert alert-danger py-2">Invalid Username / Password</div>
+    <%
+        }
+    %>
 
-	<br>
-	<%
-		String msg=request.getParameter("msg");
-	if("Invalid!".equals(msg)){
-		%>
-			<center><font color="red"size="5">Invalid Username/Password</font></center>
-		<%
-	}
-	%>
     <form action="adminLoginAction.jsp" method="post">
-        <h2>Username:</h2>
-        <input type="text" placeholder="Enter Username" name="username" required>
+        <h3 class="mb-4 fw-semibold text-center" style="color:#E49BA6;">Admin Login</h3>
 
-        <h2>Password:</h2>
-        <input type="password" placeholder="Enter Password" name="password" required>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-semibold">Username</label>
+            <input type="text" class="form-control" placeholder="Enter Username" name="username" required>
+        </div>
 
-        <br>
-        <button type="submit">Submit</button>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
+        </div>
+
+        <button type="submit" class="btn btn-custom w-50 mt-3">Submit</button>
     </form>
 </div>
 
+<!-- Footer -->
 <footer>
-    2025 PulsePoint | All Rights Reserved
+    2025 &copy; PulsePoint | All Rights Reserved
 </footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

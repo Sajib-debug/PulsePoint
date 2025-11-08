@@ -1,13 +1,15 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="Project.ConnectionProvider" %>
-<%@include file="header.html"%>
+
 <html>
 <head>
 <style>
+/* Table Styles */
 #customers {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 95%;
+  margin: 0 auto;
 }
 
 #customers td, #customers th {
@@ -26,9 +28,55 @@
   background-color: #4CAF50;
   color: white;
 }
+
+/* Header Box */
+.header-box {
+    max-width: 900px;
+    margin: 30px auto 20px auto;
+    background-color: #ffd6dc; /* pastel pink */
+    color: #d32f2f;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    padding: 20px 15px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    letter-spacing: 0.5px;
+}
+
+/* Button */
+.button {
+    display: inline-block;
+    margin: 30px auto;
+    background-color: #1976d2;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.button:hover {
+    background-color: #0d47a1;
+}
+
+/* Footer */
+h3 {
+    text-align: center;
+    color: gray;
+    margin-top: 40px;
+    font-size: 13px;
+}
 </style>
 </head>
 <body>
+
+<!-- Header Box -->
+<div class="header-box">
+    Edit/Delete/List Donor
+</div>
+
 <br>
 
 <center>
@@ -77,7 +125,12 @@
 </table>
 </center>
 
-<br><br><br>
-<h3><center>All Right Reserved @ PulsePoint : 2025</center></h3>
+<!-- Admin Page Button -->
+<center>
+    <a href="home.jsp" class="button">Admin Page</a>
+</center>
+
+<h3>All Right Reserved @ PulsePoint : 2025</h3>
+
 </body>
 </html>

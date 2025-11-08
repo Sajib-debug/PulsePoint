@@ -1,10 +1,32 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="Project.ConnectionProvider" %>
-<%@include file="header.html"%>
 <html>
 <head>
 <meta charset="UTF-8">
 <style>
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Box */
+.header-box {
+    max-width: 1200px;
+    margin: 30px auto 20px auto;
+    background-color: #ffd6dc;
+    color: #d32f2f;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    padding: 20px 15px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Table */
 #customers {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -28,6 +50,7 @@
   color: white;
 }
 
+/* Action Links */
 a.actionLink {
     text-decoration: none;
     color: white;
@@ -41,13 +64,36 @@ a.actionLink {
 a.actionLink:hover {
     background-color: #d32f2f;
 }
+
+/* Admin Page Button */
+.admin-button {
+    display: block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 30px auto;
+    width: 200px;
+}
+
+.admin-button:hover {
+    background-color: #388E3C;
+}
 </style>
-<title>Blood Requests</title>
+<title>Pending Blood Requests</title>
 </head>
 <body>
+
+<!-- Header Box -->
+<div class="header-box">
+    Pending Blood Requests
+</div>
+
 <br>
 <center>
-    <h2>Pending Blood Requests</h2>
     <table id="customers">
         <tr>
             <th>Name</th>
@@ -80,7 +126,12 @@ a.actionLink:hover {
         %>
     </table>
 </center>
-<br><br><br>
+
+<!-- Admin Page Button -->
+<a href="home.jsp" class="admin-button">Admin Page</a>
+
+<br><br>
 <h3><center>All Right Reserved @ PulsePoint : 2025</center></h3>
+
 </body>
 </html>
