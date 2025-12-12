@@ -1,6 +1,6 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="Project.ConnectionProvider" %>
-<%@ include file="header.html" %>
+
 <html>
 <head>
 <title>Update Donor</title>

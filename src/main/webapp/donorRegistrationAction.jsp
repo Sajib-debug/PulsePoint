@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Blood Request</title>
+<title>Donor Registration</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 body {
@@ -62,9 +62,12 @@ body {
 
 <%
     String name = request.getParameter("name");
-    String mobile = request.getParameter("mobile");
+    String age = request.getParameter("age");
+    String gender = request.getParameter("gender");
+    String mobilenumber = request.getParameter("mobile");
     String email = request.getParameter("email");
     String bloodgroup = request.getParameter("bloodgroup");
+    String address = request.getParameter("address");
 
     boolean success = false;
 
@@ -73,11 +76,14 @@ body {
         Connection con = DriverManager.getConnection(
             "jdbc:mysql://localhost:3306/bloodbank", "root", "root");
         PreparedStatement ps = con.prepareStatement(
-            "INSERT INTO bloodrequest (name, mobilenumber, email, bloodgroup, status) VALUES (?, ?, ?, ?, 'pending')");
+            "INSERT INTO donorregistration VALUES (?, ?, ?, ?, ?, ?, ?)");
         ps.setString(1, name);
-        ps.setString(2, mobile);
-        ps.setString(3, email);
-        ps.setString(4, bloodgroup);
+        ps.setString(2, age);
+        ps.setString(3, gender);
+        ps.setString(4, mobilenumber);
+        ps.setString(5, email);
+        ps.setString(6, bloodgroup);
+        ps.setString(7, address);
 
         int result = ps.executeUpdate();
         if(result > 0) success = true;
@@ -89,17 +95,19 @@ body {
     if(success){
 %>
 <div class="popup">
-    <h2>✅ <span class="heart">❤</span> Request Submitted!</h2>
-    <p>Thank you, <b><%=name%></b>. Your blood request has been submitted successfully.</p>
+    <h2>✅ <span class="heart">❤</span> Registration Successful!</h2>
+    <p>Thank you, <b><%=name%></b>! Your details have been saved successfully.</p>
+    <a href="donorRegistration.jsp" class="btn-custom">Register Another Donor</a>
+    <br><br>
     <a href="index.jsp" class="btn-custom">Back to Home</a>
 </div>
 <%
     } else {
 %>
 <div class="popup">
-    <h2 style="color:red;">❌ Request Failed!</h2>
+    <h2 style="color:red;">❌ Registration Failed!</h2>
     <p>Something went wrong. Please try again.</p>
-    <a href="index.jsp" class="btn-custom">Back</a>
+    <a href="donorRegistration.jsp" class="btn-custom">Back</a>
 </div>
 <%
     }

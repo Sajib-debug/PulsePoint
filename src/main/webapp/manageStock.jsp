@@ -4,11 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="style.css" type="text/css" media="screen">
 <style>
 body {
     font-family: "Poppins", sans-serif;
-    background-color: #f8f9fa;
+    background-color: #fdf2f2; /* halka pinkish background */
     color: #333;
     margin: 0;
     padding: 0;
@@ -18,7 +17,7 @@ body {
 .header-box {
     max-width: 1200px;
     margin: 30px auto 20px auto;
-    background-color: #ffd6dc;
+    background-color: #ffe6ea; /* halka pinkish */
     color: #d32f2f;
     text-align: center;
     font-size: 28px;
@@ -48,7 +47,7 @@ body {
 
 input[type="text"], select {
     border: 1px solid #ccc;
-    background: #f1f1f1;
+    background: #f9f0f0; /* halka pinkish */
     height: 45px;
     font-size: 14px;
     padding: 10px;
@@ -60,7 +59,7 @@ input[type="text"], select {
 }
 
 button.button {
-    background-color: #4CAF50;
+    background-color: #f48fb1; /* soft pink */
     color: white;
     padding: 10px 25px;
     border-radius: 25px;
@@ -72,7 +71,7 @@ button.button {
 }
 
 button.button:hover {
-    background-color: #388E3C;
+    background-color: #ec407a;
 }
 
 /* Table Section */
@@ -96,20 +95,20 @@ button.button:hover {
 }
 
 #customers tr:nth-child(even) {background-color:#f2f2f2;}
-#customers tr:hover {background-color: #ddd;}
+#customers tr:hover {background-color: #fce4ec;}
 
 #customers th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
+    background-color: #f48fb1; /* soft pink */
     color: white;
 }
 
 /* Admin Page Button */
 .admin-button {
     display: block;
-    background-color: #e53935;
+    background-color: #f06292;
     color: white;
     padding: 10px 25px;
     border-radius: 25px;
@@ -120,7 +119,7 @@ button.button:hover {
 }
 
 .admin-button:hover {
-    background-color: #b71c1c;
+    background-color: #d81b60;
 }
 
 /* Responsive */
@@ -152,7 +151,7 @@ button.button:hover {
         %>
             <center><font color="red" size="5">Something went wrong! Try Again.</font></center>
         <% } else if ("valid".equals(msg)) { %>
-            <center><font color="green" size="5">Successfully Updated</font></center>
+            <center><font color="green" size="5">Update Unit</font></center>
         <% } %>
 
         <form action="manageStockAction.jsp" method="post">
@@ -174,8 +173,12 @@ button.button:hover {
                 <option value="dec">Decrease</option>            
             </select>
 
-            <h3>Units</h3>
-            <input type="text" placeholder="Enter Units" name="units">
+            <h3>Units (ml)</h3>
+            <select name="units">
+                <% for(int i=1; i<=1000; i++){ %>
+                    <option value="<%=i%>"><%=i%></option>
+                <% } %>
+            </select>
 
             <button type="submit" class="button">Save</button>
         </form>

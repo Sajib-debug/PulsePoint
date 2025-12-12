@@ -1,12 +1,18 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="Project.ConnectionProvider" %>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pending Blood Requests | PulsePoint</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
 body {
     font-family: "Poppins", sans-serif;
-    background-color: #f8f9fa;
+    background-color: #fdf2f2; /* Soft pinkish background */
     color: #333;
     margin: 0;
     padding: 0;
@@ -16,74 +22,119 @@ body {
 .header-box {
     max-width: 1200px;
     margin: 30px auto 20px auto;
-    background-color: #ffd6dc;
-    color: #d32f2f;
+    background-color: #fff;
+    color: #2e3d49;
     text-align: center;
     font-size: 28px;
     font-weight: 600;
     padding: 20px 15px;
     border-radius: 15px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
 /* Table */
 #customers {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 90%;
-  margin: auto;
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-#customers td, #customers th {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
+#customers th, #customers td {
+    padding: 12px 15px;
+    text-align: center;
 }
-
-#customers tr:nth-child(even){background-color: #f2f2f2;}
-#customers tr:hover {background-color: #ddd;}
 
 #customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  background-color: #4CAF50;
-  color: white;
+    background-color: #f7c8d0; /* Soft pink header */
+    color: #2e3d49;
+    font-weight: 600;
+    font-size: 16px;
 }
 
-/* Action Links */
+#customers tr:nth-child(even) {
+    background-color: #fff0f3;
+}
+
+#customers tr:hover {
+    background-color: #ffe6ec; /* Hover soft pink */
+}
+
+/* Action Buttons */
 a.actionLink {
     text-decoration: none;
-    color: white;
-    background-color: #ff4b5c;
+    color: #fff;
     padding: 6px 12px;
     border-radius: 12px;
-    font-weight: bold;
+    font-weight: 600;
     transition: 0.3s;
+    font-size: 14px;
 }
 
-a.actionLink:hover {
-    background-color: #d32f2f;
+a.actionLink.done {
+    background-color: #4CAF50; /* Green */
+}
+
+a.actionLink.done:hover {
+    background-color: #388E3C;
+}
+
+a.actionLink.delete {
+    background-color: #FF6B6B; /* Soft Red */
+}
+
+a.actionLink.delete:hover {
+    background-color: #E53935;
 }
 
 /* Admin Page Button */
 .admin-button {
     display: block;
-    background-color: #4CAF50;
+    background-color: #1976d2; /* Professional Blue */
     color: white;
-    padding: 10px 25px;
+    padding: 12px 25px;
     border-radius: 25px;
     text-align: center;
     font-weight: bold;
     text-decoration: none;
     margin: 30px auto;
-    width: 200px;
+    width: 220px;
+    transition: 0.3s;
 }
 
 .admin-button:hover {
-    background-color: #388E3C;
+    background-color: #1565c0;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* Responsive Table */
+@media(max-width:768px){
+    #customers th, #customers td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .header-box {
+        font-size: 22px;
+        padding: 15px 10px;
+    }
+
+    .admin-button {
+        width: 180px;
+        padding: 10px 20px;
+    }
 }
 </style>
-<title>Pending Blood Requests</title>
 </head>
 <body>
 
@@ -93,7 +144,7 @@ a.actionLink:hover {
 </div>
 
 <br>
-<center>
+<div class="table-responsive">
     <table id="customers">
         <tr>
             <th>Name</th>
@@ -108,15 +159,36 @@ a.actionLink:hover {
                 Connection con = ConnectionProvider.getConnection();
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery("SELECT * FROM bloodrequest WHERE status='pending'");
+                boolean hasData = false;
                 while(rs.next()) {
+                    String name = rs.getString("name");
+                    String mobile = rs.getString("mobilenumber");
+                    String email = rs.getString("email");
+                    String bloodgroup = rs.getString("bloodgroup");
+
+                    // Skip row if all values are null
+                    if ((name == null || name.isEmpty()) &&
+                        (mobile == null || mobile.isEmpty()) &&
+                        (email == null || email.isEmpty()) &&
+                        (bloodgroup == null || bloodgroup.isEmpty())) {
+                        continue;
+                    }
+                    hasData = true;
         %>
         <tr>
-            <td><%= rs.getString("name") %></td>
-            <td><%= rs.getString("mobilenumber") %></td>
-            <td><%= rs.getString("email") %></td>
-            <td><%= rs.getString("bloodgroup") %></td>
-            <td><a class="actionLink" href="requestForBloodDone.jsp?mobilenumber=<%= rs.getString("mobilenumber") %>">Done</a></td>
-            <td><a class="actionLink" href="requestForBloodDelete.jsp?mobilenumber=<%= rs.getString("mobilenumber") %>">Delete</a></td>
+            <td><%= name != null ? name : "" %></td>
+            <td><%= mobile != null ? mobile : "" %></td>
+            <td><%= email != null ? email : "" %></td>
+            <td><%= bloodgroup != null ? bloodgroup : "" %></td>
+            <td><a class="actionLink done" href="requestForBloodDone.jsp?mobilenumber=<%= mobile %>">Done</a></td>
+            <td><a class="actionLink delete" href="requestForBloodDelete.jsp?mobilenumber=<%= mobile %>">Delete</a></td>
+        </tr>
+        <%
+                }
+                if(!hasData){
+        %>
+        <tr>
+            <td colspan="6">No pending requests found.</td>
         </tr>
         <%
                 }
@@ -125,13 +197,15 @@ a.actionLink:hover {
             }
         %>
     </table>
-</center>
+</div>
 
 <!-- Admin Page Button -->
 <a href="home.jsp" class="admin-button">Admin Page</a>
 
-<br><br>
-<h3><center>All Right Reserved @ PulsePoint : 2025</center></h3>
+<footer>
+    All Rights Reserved @ PulsePoint | 2025
+</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

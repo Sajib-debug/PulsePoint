@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/webapp/adminLogin.jsp=UTF-8
+encoding//src/main/webapp/home.jsp=UTF-8
+encoding//src/main/webapp/manageStock.jsp=UTF-8
+encoding//src/main/webapp/requestCompleted.jsp=UTF-8
+encoding//src/main/webapp/requestForBlood.jsp=UTF-8

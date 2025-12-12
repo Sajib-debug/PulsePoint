@@ -1,143 +1,278 @@
+<%@ page import="java.sql.*,java.util.*,Project.ConnectionProvider" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>PulsePoint | Home</title>
+    <meta charset="UTF-8">
+    <title>PulsePoint | Admin Dashboard</title>
 
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-    margin: 0;
-    font-family: "Poppins", sans-serif;
-    background-color: #fff;
-}
+    body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg,#ffe6eb,#fff0f5); /* Soft pinkish gradient */
+        margin: 0;
+        color: #333;
+    }
 
-/* Main container layout */
-.main-container {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-}
+    .main-container {
+        display: flex;
+        min-height: 100vh;
+        transition: all 0.3s ease;
+    }
 
-/* Sidebar styling */
-.sidebar {
-    width: 250px;
-    background-color: #ffd6dc;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-}
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background: #fff;
+        padding: 25px 20px;
+        border-right: 1px solid #e5e7eb;
+        box-shadow: 2px 0 20px rgba(0,0,0,0.08);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        transition: all 0.3s ease;
+    }
 
-.sidebar h2 {
-    font-size: 22px;
-    text-align: center;
-    margin-bottom: 30px;
-    color: #333;
-    font-weight: 600;
-}
+    .sidebar h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #4a4a4a;
+        text-align: center;
+        margin-bottom: 40px;
+    }
 
-.sidebar .btn {
-    background-color: #ff5c8d;
-    color: #fff;
-    font-weight: 500;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
+    .nav-btn {
+        display: block;
+        padding: 12px 18px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+        background: #f7f2f5; /* softer pink for sidebar links */
+        font-weight: 500;
+        color: #333;
+        text-decoration: none;
+        border: 1px solid #f3d6de;
+        transition: 0.3s;
+    }
 
-.sidebar .btn:hover {
-    background-color: #ff2e63;
-}
+    .nav-btn:hover {
+        background: #d9778b;
+        color: #fff;
+        border-color: #d9778b;
+        transform: translateX(5px);
+    }
 
-/* Right content area */
-.content-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    overflow-y: auto;
-    padding: 20px;
-    background-color: #9B5DE0; /* Updated background color */
-}
+    .logout-btn {
+        background: #ff6b6b !important;
+        color: white !important;
+        border: none !important;
+    }
 
-/* Welcome Box */
-.welcome-box {
-    background-color: #f0e5ff; /* Light color for contrast */
-    color: #4B0082; /* Dark purple text */
-    text-align: center;
-    font-size: 28px;
-    font-weight: 600;
-    padding: 20px 15px;
-    margin-bottom: 30px;
-    border-radius: 15px;
-    width: 60%;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
-}
+    /* Content */
+    .content-wrapper {
+        flex: 1;
+        padding: 30px 40px;
+        transition: all 0.3s ease;
+    }
 
-/* Image styling */
-.image-container {
-    width: 80%;
-    max-width: 900px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-    margin-bottom: 20px;
-}
+    /* Welcome Box */
+    .welcome-box {
+        background: linear-gradient(135deg,#ffd6e0,#ffb3cc); /* Pinkish gradient */
+        padding: 30px;
+        border-radius: 20px;
+        font-size: 28px;
+        font-weight: 700;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        color: #5a1f3a;
+    }
 
-.image-container img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-}
+    /* Statistic Cards */
+    .stat-card {
+        padding: 25px;
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        font-weight: 600;
+        transition: transform 0.3s, box-shadow 0.3s;
+        color: #333;
+    }
 
-/* Footer */
-.footer {
-    text-align: center;
-    margin-top: 20px;
-    color: #fff; /* White text for visibility */
-    font-size: 14px;
-}
+    .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .stat-card h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .stat-card p {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* Gradient colors for stats */
+    .card-blue { background: linear-gradient(135deg,#b8c6ff,#7c94f6); color:#1b255a; }
+    .card-pink { background: linear-gradient(135deg,#ffb3b3,#ff7f7f); color:#5a1f1f; }
+    .card-green { background: linear-gradient(135deg,#a0e6b0,#65d18f); color:#1f3a2a; }
+    .card-yellow { background: linear-gradient(135deg,#ffe69b,#ffd54d); color:#665a1f; }
+
+    /* Chart Cards */
+    .chart-card {
+        border-radius: 20px;
+        padding: 25px;
+        background: #fff0f5;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        height: 360px;
+        transition: transform 0.3s;
+    }
+
+    .chart-card:hover { transform: translateY(-6px); }
+
+    .chart-card h5 { text-align: center; font-weight: 600; margin-bottom: 25px; color:#5a1f3a; }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+        .main-container { flex-direction: column; }
+        .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #ddd; }
+        .content-wrapper { padding: 20px; }
+        .stat-card p { font-size: 26px; }
+        .chart-card { height: 300px; }
+    }
 </style>
 </head>
-
 <body>
 
 <div class="main-container">
     <!-- Sidebar -->
     <div class="sidebar">
         <h2>PulsePoint</h2>
-        <a href="addNewDonor.jsp" class="btn">Add New Donor</a>
-        <a href="editDeleteList.jsp" class="btn">Edit/Delete/List Donors</a>
-        <a href="manageStock.jsp" class="btn">Manage Stock</a>
-        <a href="requestForBlood.jsp" class="btn">Request for Blood</a>
-        <a href="requestCompleted.jsp" class="btn">Request Completed</a>
-        <a href="index.jsp" class="btn btn-danger mt-auto">Logout</a>
+        <a href="donorRequest.jsp" class="nav-btn">Donor Request</a>
+        <a href="addNewDonor.jsp" class="nav-btn">Add New Donor</a>
+        <a href="editDeleteList.jsp" class="nav-btn">Manage Donors</a>
+        <a href="manageStock.jsp" class="nav-btn">Manage Stock</a>
+        <a href="requestForBlood.jsp" class="nav-btn">Request Blood</a>
+        <a href="requestCompleted.jsp" class="nav-btn">Completed Requests</a>
+        <a href="index.jsp" class="nav-btn logout-btn">Logout</a>
     </div>
 
-    <!-- Main Content -->
+    <!-- Content -->
     <div class="content-wrapper">
-        <!-- Welcome Box -->
         <div class="welcome-box">
-            Welcome Admin!
+            Welcome Admin! 👋
         </div>
 
-        <!-- Main Image -->
-        <div class="image-container">
-            <img src="home.jpg" alt="PulsePoint Home">
+        <%
+            Connection con = ConnectionProvider.getConnection();
+            ResultSet rs;
+
+            int totalDonors = 0, totalRequests = 0, pendingRequests = 0, doneRequests = 0;
+
+            rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM donor");
+            if(rs.next()) totalDonors = rs.getInt(1);
+
+            rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM bloodrequest");
+            if(rs.next()) totalRequests = rs.getInt(1);
+
+            rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM bloodrequest WHERE status='pending'");
+            if(rs.next()) pendingRequests = rs.getInt(1);
+
+            rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM bloodrequest WHERE status='done'");
+            if(rs.next()) doneRequests = rs.getInt(1);
+
+            rs = con.createStatement().executeQuery("SELECT bloodgroup, units FROM stock");
+            Map<String,Integer> stockMap = new LinkedHashMap<>();
+            while(rs.next()){
+                stockMap.put(rs.getString("bloodgroup"), rs.getInt("units"));
+            }
+        %>
+
+        <!-- Stat Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3"><div class="stat-card card-blue"><h3>Total Donors</h3><p><%= totalDonors %></p></div></div>
+            <div class="col-md-3 mb-3"><div class="stat-card card-pink"><h3>Total Requests</h3><p><%= totalRequests %></p></div></div>
+            <div class="col-md-3 mb-3"><div class="stat-card card-yellow"><h3>Pending</h3><p><%= pendingRequests %></p></div></div>
+            <div class="col-md-3 mb-3"><div class="stat-card card-green"><h3>Completed</h3><p><%= doneRequests %></p></div></div>
         </div>
 
-        <!-- Footer -->
-        <div class="footer">
-            &copy; 2025 PulsePoint. All Rights Reserved.
+        <!-- Charts -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="chart-card">
+                    <h5>Blood Stock 🩸</h5>
+                    <canvas id="stockChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="chart-card">
+                    <h5>Request Status 📊</h5>
+                    <canvas id="requestChart"></canvas>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
 
-<!-- Bootstrap JS -->
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+new Chart(document.getElementById('stockChart'), {
+    type:'bar',
+    data:{
+        labels:[<% for(String bg : stockMap.keySet()) out.print("'" + bg + "',"); %>],
+        datasets:[{
+            label:'Units',
+            data:[<% for(Integer u : stockMap.values()) out.print(u + ","); %>],
+            backgroundColor:['#ff7f7f','#ffd699','#a0e6b0','#6a7ae0','#d18aff','#ffb36f','#ff9d9d','#b8c6ff'] // modern palette
+        }]
+    },
+    options:{
+        plugins:{ datalabels:{ color:'#333', anchor:'end', align:'top' }},
+        scales:{ y:{ beginAtZero:true }},
+        responsive:true
+    },
+    plugins:[ChartDataLabels]
+});
 
+new Chart(document.getElementById('requestChart'), {
+    type:'doughnut',
+    data:{
+        labels:['Pending','Done'],
+        datasets:[{
+            data:[<%= pendingRequests %>, <%= doneRequests %>],
+            backgroundColor:['#ff99a1','#6ad18f'] // softer pink & green
+        }]
+    },
+    options:{
+        plugins:{
+            datalabels:{ color:'#333', formatter:(v,ctx)=>{
+                let s = ctx.chart.data.datasets[0].data.reduce((a,b)=>a+b,0);
+                return (v*100/s).toFixed(1)+'%';
+            }},
+            legend:{ position:'bottom' }
+        },
+        responsive:true
+    },
+    plugins:[ChartDataLabels]
+});
+</script>
 </body>
 </html>
